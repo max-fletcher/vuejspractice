@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vue JS Practice</title>
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="vue1">
+      <h1> Data Methods and Data Binding </h1>
+      <p>{{ greet('morning') }}</p>
+      <p>{{ name }}</p>
+      <p>{{ job }}</p>
+      <a v-bind:href="website"> Website </a>
+      <p v-html="websiteTag">Website Tag</p>
+      <input type="text" v-bind:value="name">
+    </div>
+
+    <div id="vue2">
+      <h1>Events, Functions and Event Modifiers</h1>
+      <p>My age is {{ age }}</p>
+      <p class="highlight"> You can use @click instead of v-on:click </p>
+      <button v-on:click="addYear(1)">Add a Year</button>
+      <button v-on:click="subtractYear(1)">Subtract a Year</button>
+      <button v-on:click="addYear(10)">Add 10 Years</button>
+      <button v-on:click="subtractYear(10)">Subtract 10 Years</button>
+      <button v-on:click.once="addYear(1)">Add a Year once only</button>
+      <p class="highlight"> You don't need to add parentheses if you have no parameters/empty parameters
+      in function declaration </p>
+      <br>
+      <p class="highlight"> This link doesn't take you to the website in href due to modifier called "prevent" </p>
+      <a v-on:click.prevent="click" href="https://9gag.com/"> Website </a>
+      <br>
+      <br>
+      <p class="highlight"> uses javascript event global variable with vue event modifier </p>
+      <div id="canvas" v-on:mousemove="updateXY"> {{ x }} , {{ y }}  </div>
+    </div>
+
+    <div id="vue3">
+      <h1>Keyboard Events</h1>
+      <p class="highlight"> If you use v-on:keyup, it fires events every time a key is pressed
+           If you use v-on:keyup.enter, it fires when you press enter after typing
+           If you use v-on:keyup.alt.enter, it fires when you press alt+enter after typing
+      </p>
+      <label for="name">Name: </label>
+      <input type="text" name="text" v-on:keyup.enter="logName">
+      <br>
+      <br>
+      <label for="age">Age: </label>
+      <input type="text" name="age" v-on:keyup.enter="logAge">
+    </div>
+
+    <div id="vue4">
+      <h1>Two Way Data-Binding</h1>
+      <p class="highlight"> In two way data binding, the data is directly stored without the need for
+          an intermediate function to bind the data to the variable. Also it goes back and forth between
+          browser and  </p>
+      <p>Type something to have it show in browser</p>
+      <label for="name">Name: </label>
+      <input type="text" name="text" v-model="name">
+      <p>{{ name }}</p>
+      <label for="age">Age: </label>
+      <input type="text" name="age" v-model="age">
+      <p>{{ age }}</p>
+    </div>
+
+    <div id="vue5">
+      <h1> Computed Properties </h1>
+      <p> My age is {{ age }} </p>
+      <p> A = {{ a }} </p>
+      <p> B = {{ b }} </p>
+      <p> Age + a = {{ addToA }} </p>
+      <p> Age + b = {{ addToB }} </p>
+      <p class="highlight"> Computed Properties do not require parameters in view. Also they run individually while
+           for methods, they all run when one of them is run </p>
+      <button v-on:click="a++"> Add to a </button>
+      <button v-on:click="b++"> Add to b </button>
+    </div>
+
+    <div id="vue6">
+      <h1> Dynamic CSS Classes </h1>
+      <h3>Example 1</h3>
+      <div v-on:click="available = !available" v-bind:class="{available: available}">
+        <span> Taxi 1 </span>
+      </div>
+      <h3>Example 2</h3>
+      <button v-on:click="available = !available">Toggle Available</button>
+      <button v-on:click="nearby = !nearby">Toggle Nearby</button>
+      <div v-bind:class="compClasses">
+        <span> Taxi 2 </span>
+      </div>
+      <h1> Conditionals </h1>
+      <button v-on:click="error = !error">Toggle Error</button>
+      <button v-on:click="success = !success">Toggle Success</button>
+      <h3>Example 1</h3>
+      <h5 class="highlight">This set uses v-if and v-else-if. Not very useful in this example though.</h5>
+      <p v-if="error">There is an Error</p>
+      <p v-else-if="success">Success !!</p>
+      <h3>Example 2</h3>
+      <h5 class="highlight">This uses v-show. Close to what you would expect.</h5>
+      <p v-show="error">There is an Error</p>
+      <p v-show="success">Success kid lol</p>
+    </div>
+
+    <div id="vue7">
+      <h1>Looping through arrays with v-for directive</h1>
+      <ul>
+        <li v-for="(character,index) in characters">{{ index }}.{{ character }}</li>
+      </ul>
+
+      <p class="highlight"> template tags do not show in the DOM so it can be used when you dont want extra mark-up </p>
+      <h3 class="highlight">Example 1 for associative array</h3>
+      <template v-for="(ninja,index) in ninjas">
+        <ul>
+          <h3>{{ index }}.{{ ninja.name }}</h3>
+          <li>{{ninja.age}}</li>
+        </ul>
+      </template>
+
+      <h3 class="highlight">Example 2 for the same associative array but in case we dont know the key value pair names</h3>
+      <template v-for="ninja in ninjas">
+        <div v-for="(val,key) in ninja">
+          <p>{{ key }} - {{ val }}</p>
+        </div>
+      </template>
+
+    </div>
+    <h1>Punch Bag Game</h1>
+    <div id="vue8">
+      <!-- bag image -->
+      <div id="bag" v-bind:class="{burst: ended}"></div>
+
+      <!-- bag health -->
+      <div id="bag-health">
+        <div v-bind:style="{width: health + '%'}"></div>
+      </div>
+
+      <!-- game controls -->
+      <div id="controls">
+        <button v-on:click="punch" v-show="!ended">Punch</button>
+        <button v-on:click="restart">Restart</button>
+      </div>
+
+    </div>
+
+    <h1>Multiple Vue Instances and Components</h1>
+
+    <p class="highlight"> Keep in mind that you need to declare the component first then
+       declare the vue object you want to use.
+    </p>
+
+    <div id="vue9">
+      <h4>Consider this as App 1</h4>
+      <p> {{ title }} </p>
+      <p> {{ greet() }} </p>
+      <greeting></greeting>
+    </div>
+
+    <div id="vue10">
+      <h4>Consider this App 2</h4>
+      <p> {{ title }} </p>
+      <p> {{ greet() }} </p>
+      <p class="highlight"> Inside the component, data can be stored. If you have a function inside the
+         component to change the data inside then you can do so as shown with the button below. But it doesn't
+          change the data in other vue instances though. Each vue instance maintains its own value of data
+          inside the components.
+      </p>
+      <greeting></greeting>
+      <p class="highlight"> Changing a variable belonging to another vue instance(Vue App 1 title).</p>
+      <button v-on:click="changeTitle">Change App 1 Title</button>
+    </div>
+
+    <div id="vue11">
+      <h1>Refs</h1>
+      <p class="highlight"> Uses refs to read and output data using readRefs function. The below input tag
+        has an attribute called ref="input" which allows Vue JS to access that input DOM characteristics
+        of the input tag. You can change anything related to a tag by accessing the DOM properties of that
+        tag using ref (like innerHTML).
+      </p>
+      <input type="text" ref="input">
+      <button v-on:click="readRefs">Change and Display</button>
+      <p>Your fav food: {{ output }}</p>
+
+      <p ref="name"> Slim Shady </p>
+    </div>
+
+
+    <script src="app.js"></script>
+  </body>
+</html>
